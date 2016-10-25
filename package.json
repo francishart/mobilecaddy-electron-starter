@@ -1,5 +1,5 @@
 {
-  "name": "electron-quick-start",
+  "name": "mobilecaddy-desktop",
   "version": "1.0.0",
   "description": "A minimal Electron application",
   "main": "main.js",
@@ -18,5 +18,9 @@
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "^1.4.1"
+  },
+  "dependencies": {
+    "electron-json-storage": "^2.0.1",
+    "query-string": "^4.2.3"
   }
 }
