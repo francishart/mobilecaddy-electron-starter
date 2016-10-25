@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
 
     <script src="force.js"></script>
+    <link rel="stylesheet" href="app.css" />
 
     <title>MobileCaddy Desktop</title>
   </head>
@@ -23,7 +24,8 @@
 
     var access_token = getUrlParamByName('access_token'),
         refresh_token = getUrlParamByName('refresh_token'),
-        userId = getUrlParamByName('id');
+        userId = getUrlParamByName('id'),
+        buildName = getUrlParamByName('buildName');
 
     var alreadyInstalled = localStorage.getItem('alreadyInstalled');
 
@@ -43,7 +45,7 @@
 
         SupportMc.constants = {
             buildVersion : '001',
-            buildName : 'DESK001',
+            buildName : buildName,
             bootstrapPage : '/apex/mobilecaddy1__MobileCaddyBootstrap001_mc',
             offerLanguageChoice : true
         }
@@ -123,6 +125,7 @@
       // Request the startPageUrl from the main process
       var ipcRenderer = require('electron').ipcRenderer;
       var startPageUrl = ipcRenderer.sendSync('request-startPageUrl', '');
+      console.log("startPageUrl2", startPageUrl);
       try {
           window.location.href = startPageUrl;
         }

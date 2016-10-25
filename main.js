@@ -1,6 +1,6 @@
 const electron = require('electron')
 // Module to control application life.
-const app = electron.app
+const {app, Menu} = require('electron')
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow
 
@@ -10,6 +10,8 @@ const storage = require('electron-json-storage');
 
 var querystring = require('query-string');
 
+let buildName = "BIZ001";
+
 // Which tit named this... oh me
 var queryString = "";
 
@@ -17,6 +19,30 @@ var queryString = "";
 var options = {
     client_id: '3MVG9Rd3qC6oMalWEuQby1hkUef0N2L7kTPExDjRAs1GH35ueKyc3q_D5NY0LLoLHnfwIr_Y8PyeRotaClrtZ'
 };
+
+// Menu
+const template = [
+  {
+    label: 'File',
+    submenu: [
+      {
+        role: 'quit'
+      },
+      {
+        type: 'separator'
+      },
+      {
+      label: 'Clear cache and Quit',
+        click (item, focusedWindow) {
+          clearCacheAndQuit();
+        }
+      }
+    ]
+  }
+];
+
+const menu = Menu.buildFromTemplate(template)
+Menu.setApplicationMenu(menu)
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -26,20 +52,25 @@ var cmdLineArgs = process.argv;
   console.log ("cmdLineArgs", cmdLineArgs);
 if (cmdLineArgs[2] == "clear") {
   console.log ("Clearing stuff");
-  storage.remove('alreadyLoggedIn');
-  storage.remove('startPageUrl');
+  // storage.remove('alreadyLoggedIn');
+  // storage.remove('startPageUrl');
+  clearCacheAndQuit();
 }
 
 function createWindow () {
 
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 800, height: 800})
+  mainWindow = new BrowserWindow({icon: 'icon.png', width: 800, height: 800, minWidth: 800, minHeight: 600})
 
   // and load the index.html of the app.
   mainWindow.loadURL(`file://${__dirname}/index.html`)
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools()
+  if (cmdLineArgs[2] == "dbg") {
+    mainWindow.webContents.openDevTools();
+  } else if (cmdLineArgs[2]) {
+    buildName = cmdLineArgs[2];
+  }
 
   storage.has('alreadyLoggedIn', function(error, hasKey) {
     if (error) throw error;
@@ -89,7 +120,7 @@ function createWindow () {
         console.log("did-finish-load");
         if ( authShouldClose ) {
           authWindow.close();
-          mainWindow.loadURL(`file://${__dirname}/index.html?` + queryString);
+          mainWindow.loadURL(`file://${__dirname}/index.html?` + queryString + '&buildName=' + buildName);
         }
       });
       authWindow.webContents.on('did-fail-load', function(event, newUrl) {
@@ -156,7 +187,8 @@ ipcMain.on('request-creds', (event, arg) => {
   console.log("org_id", org_id);
   event.returnValue = queryString +
     '&client_id=' + options.client_id +
-    '&org_id=' + org_id;
+    '&org_id=' + org_id +
+    '&buildName=' + buildName;
 })
 
 // IPC - local page is asking for the startPageUrl that we have stored.
@@ -165,7 +197,11 @@ ipcMain.on('request-startPageUrl', (event, arg) => {
   storage.get('startPageUrl', function(error, data) {
     if (error) throw error;
     console.log(data);
-    event.returnValue = data.startPageUrl;
+    if (data.startPageUrl) {
+      event.returnValue = data.startPageUrl;
+    } else {
+      clearCacheAndReStart();
+    }
   });
 })
 
@@ -194,3 +230,17 @@ function getUrlParamByName(name, qString) {
   else
     return decodeURIComponent(results[1].replace(/\+/g, " "));
 } // end getUrlParamByName
+
+function clearCacheAndQuit(){
+  var appDataPath = app.getPath('userData');
+  console.log('appDataPath', appDataPath);
+  if (appDataPath.indexOf('mobilecaddy-desktop') > 0) {
+    const rimraf = require('rimraf');
+    rimraf(appDataPath, function(){
+      app.quit();
+    });
+  } else {
+    console.log("Did NOT delete app cache");
+  }
+}
+

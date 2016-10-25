@@ -1,5 +1,6 @@
 {
   "name": "mobilecaddy-desktop",
+  "productName": "mobilecaddy-desktop",
   "version": "1.0.0",
   "description": "A minimal Electron application",
   "main": "main.js",
@@ -21,6 +22,7 @@
   },
   "dependencies": {
     "electron-json-storage": "^2.0.1",
-    "query-string": "^4.2.3"
+    "query-string": "^4.2.3",
+    "rimraf": "^2.5.4"
   }
 }
