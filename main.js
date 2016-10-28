@@ -1,16 +1,12 @@
 const electron = require('electron')
 // Module to control application life.
-const {app, Menu} = require('electron')
+const {app, ipcMain, Menu} = require('electron')
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow
 
-const {ipcMain} = require('electron')
-
 const storage = require('electron-json-storage');
-
-var querystring = require('query-string');
-
-let buildName = "BIZ001";
+const querystring = require('query-string');
+const pjson = require('./package.json');
 
 // Which tit named this... oh me
 var queryString = "";
@@ -20,7 +16,13 @@ var options = {
     client_id: '3MVG9Rd3qC6oMalWEuQby1hkUef0N2L7kTPExDjRAs1GH35ueKyc3q_D5NY0LLoLHnfwIr_Y8PyeRotaClrtZ'
 };
 
-// Menu
+
+/**
+ * ----------------------------------------------------------------------------
+ * M E N U
+ * ----------------------------------------------------------------------------
+ */
+
 const template = [
   {
     label: 'File',
@@ -44,6 +46,13 @@ const template = [
 const menu = Menu.buildFromTemplate(template)
 Menu.setApplicationMenu(menu)
 
+
+/**
+ * ----------------------------------------------------------------------------
+ * M A I N
+ * ----------------------------------------------------------------------------
+ */
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 var mainWindow = null
@@ -51,9 +60,6 @@ var mainWindow = null
 var cmdLineArgs = process.argv;
   console.log ("cmdLineArgs", cmdLineArgs);
 if (cmdLineArgs[2] == "clear") {
-  console.log ("Clearing stuff");
-  // storage.remove('alreadyLoggedIn');
-  // storage.remove('startPageUrl');
   clearCacheAndQuit();
 }
 
@@ -62,15 +68,11 @@ function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow({icon: 'icon.png', width: 800, height: 800, minWidth: 800, minHeight: 600})
 
-  // and load the index.html of the app.
-  mainWindow.loadURL(`file://${__dirname}/index.html`)
+  // and load the launcher.html of the app.
+  mainWindow.loadURL(`file://${__dirname}/launcher.html`)
 
   // Open the DevTools.
-  if (cmdLineArgs[2] == "dbg") {
-    mainWindow.webContents.openDevTools();
-  } else if (cmdLineArgs[2]) {
-    buildName = cmdLineArgs[2];
-  }
+  if (cmdLineArgs[2] == "dbg") mainWindow.webContents.openDevTools();
 
   storage.has('alreadyLoggedIn', function(error, hasKey) {
     if (error) throw error;
@@ -80,7 +82,7 @@ function createWindow () {
         if (error) throw error;
         console.log(data);
 
-        mainWindow.loadURL(`file://${__dirname}/index.html?` + data.queryString);
+        mainWindow.loadURL(`file://${__dirname}/launcher.html?` + data.queryString);
       });
 
     } else {
@@ -89,8 +91,9 @@ function createWindow () {
 
       // Build the OAuth consent page URL
       var authWindow = new BrowserWindow({ width: 600, height: 650, show: false, 'node-integration': false });
-      var sfLoginUrl = 'https://login.salesforce.com';
-      var authUrl = sfLoginUrl + '/services/oauth2/authorize?client_id=' + options.client_id + '&redirect_uri=' + 'http://localhost:3030/oauthcallback.html' + '&response_type=token';
+      // Open the DevTools.
+      if (cmdLineArgs[2] == "dbg") authWindow.webContents.openDevTools();
+      var authUrl = pjson.loginEndpoint + '/services/oauth2/authorize?client_id=' + options.client_id + '&redirect_uri=' + 'http://localhost:3030/oauthcallback.html' + '&response_type=token';
       authWindow.loadURL(authUrl);
       authWindow.show();
 
@@ -120,7 +123,7 @@ function createWindow () {
         console.log("did-finish-load");
         if ( authShouldClose ) {
           authWindow.close();
-          mainWindow.loadURL(`file://${__dirname}/index.html?` + queryString + '&buildName=' + buildName);
+          mainWindow.loadURL(`file://${__dirname}/launcher.html?` + queryString + '&buildName=' + pjson.buildName);
         }
       });
       authWindow.webContents.on('did-fail-load', function(event, newUrl) {
@@ -142,7 +145,6 @@ function createWindow () {
       }, false);
     }
   });
-
 
 
   mainWindow.webContents.on('did-finish-load', function(event, newUrl) {
@@ -176,19 +178,24 @@ app.on('activate', function () {
   // On OS X it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (mainWindow === null) {
-    createWindow()
+    //createWindow()
   }
 })
 
+/**
+ * ----------------------------------------------------------------------------
+ * I P C   H A N D L I N G
+ * ----------------------------------------------------------------------------
+ */
+
 // IPC - vfRemote is asking for our auth creds
 ipcMain.on('request-creds', (event, arg) => {
-  console.log('request-creds', arg)  // prints "ping"
+  // console.log('request-creds', arg)  // prints "ping"
   const org_id = getOrgIdFromQueryString();
-  console.log("org_id", org_id);
   event.returnValue = queryString +
     '&client_id=' + options.client_id +
     '&org_id=' + org_id +
-    '&buildName=' + buildName;
+    '&buildName=' + pjson.buildName;
 })
 
 // IPC - local page is asking for the startPageUrl that we have stored.
@@ -212,11 +219,27 @@ ipcMain.on('startPageUrl', (event, arg) => {
 })
 
 
+/**
+ * ----------------------------------------------------------------------------
+ * U T I L I T Y    F U N C T I O N S
+ * ----------------------------------------------------------------------------
+ */
+
+/**
+ * @function getOrgIdFromQueryString
+ * @description Get the orgId from our queryString (is inside the id param)
+ * @return {string} Salesforce Org ID
+ */
 function getOrgIdFromQueryString() {
-  const id = getUrlParamByName('id', queryString);
-  return id.split('/')[4];
+  return getUrlParamByName('id', queryString).split('/')[4];
 }
 
+/**
+ * @function getUrlParamByName
+ * @description Gets value from a querystring by name
+ * @param  {string} name Name of the param to pluck out
+ * @return {string}      The value
+ */
 function getUrlParamByName(name, qString) {
   console.info('getUrlParamByName -> name = ' + name);
   name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
@@ -231,6 +254,10 @@ function getUrlParamByName(name, qString) {
     return decodeURIComponent(results[1].replace(/\+/g, " "));
 } // end getUrlParamByName
 
+/**
+ * @function clearCacheAndQuit
+ * @description Clears all applicaition data and quits the app
+ */
 function clearCacheAndQuit(){
   var appDataPath = app.getPath('userData');
   console.log('appDataPath', appDataPath);

@@ -4,6 +4,9 @@
   "version": "1.0.0",
   "description": "A minimal Electron application",
   "main": "main.js",
+  "buildName" : "BIZ001",
+  "loginEndpoint": "https://login.salesforce.com",
+  "salesforceApiVersion" : "v30.0",
   "scripts": {
     "start": "electron ."
   },
