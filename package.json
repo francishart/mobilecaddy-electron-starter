@@ -24,8 +24,5 @@
     "electron": "^1.4.1"
   },
   "dependencies": {
-    "electron-json-storage": "^2.0.1",
-    "query-string": "^4.2.3",
-    "rimraf": "^2.5.4"
   }
 }

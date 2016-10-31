@@ -1,38 +1,53 @@
-# electron-quick-start
+# MobileCaddy Electron Wrapper Starter
 
-**Clone and run for a quick way to see an Electron in action.**
+A basic app that uses [MobileCaddy](https://mobliecaddy.net) to run fully offline, customisable Salesforce desktop apps.
 
-This is a minimal Electron application based on the [Quick Start Guide](http://electron.atom.io/docs/latest/tutorial/quick-start) within the Electron documentation.
+A basic application needs just additions:
 
-**Use this app along with the [Electron API Demos](http://electron.atom.io/#get-started) app for API code examples to help you get started.**
+## package.json
+- add the `mobilecaddy-electron` dependency
+- Our file also needs these config items defined;
+```json
+  "name": "mobilecaddy-desktop",
+  "productName": "mobilecaddy-desktop",
+  "buildName" : "BIZ001",
+  "loginEndpoint": "https://login.salesforce.com",
+  "salesforceApiVersion" : "v30.0"
+```
+- `buildName` should be set to match your MobileCaddy app as per the Salesforce config
+- `loginEndpoint` can be set matched your environment (e.g. *test.salesforce.com* for a sandbox)
 
-A basic Electron application needs just these files:
+## main.js
+- Add the the following. This kicks off authentication to Salesforce on the first run up
+```javascript
+  const mobilecaddy = require('mobilecaddy-electron')
+```
 
-- `package.json` - Points to the app's main file and lists its details and dependencies.
-- `main.js` - Starts the app and creates a browser window to render HTML. This is the app's **main process**.
-- `index.html` - A web page to render. This is the app's **renderer process**.
+## launcher.html
 
-You can learn more about each of these components within the [Quick Start Guide](http://electron.atom.io/docs/latest/tutorial/quick-start).
+- This file is needed by the MobileCaddy libs. It's used as a springboard/root for our remote SPA
+- Needs these lines in the `head`
+```html
+  <script src="./node-modules/mobilecaddy-electron/lib/force.js"></script>
+  <script src="./node-modules/mobilecaddy-electron/lib/launcher.js"></script>
+```
+
 
 ## To Use
 
-To clone and run this repository you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer. From your command line:
+Clone the repo, install deps and run.
 
 ```bash
-# Clone this repository
-git clone https://github.com/electron/electron-quick-start
-# Go into the repository
-cd electron-quick-start
-# Install dependencies and run the app
-npm install && npm start
+# Install dependencies
+npm install
+
+# Normal run
+npm start
+
+# Or run with debug
+npm start dbg
+
+# Or clear all saved data - This will run, clear and quit
+npm start clear
 ```
 
-Learn more about Electron and its API in the [documentation](http://electron.atom.io/docs/latest).
-
-## Other Example Apps
-
-For more example apps, see the
-[list of boilerplates](http://electron.atom.io/community/#boilerplates)
-created by the awesome electron community.
-
-#### License [CC0 1.0 (Public Domain)](LICENSE.md)
