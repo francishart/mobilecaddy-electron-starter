@@ -3,6 +3,8 @@
   "productName": "mobilecaddy-desktop",
   "version": "1.0.0",
   "description": "A minimal Electron application",
+  "author": "MobileCaddy",
+  "license": "MIT",
   "main": "main.js",
   "buildName" : "BIZ001",
   "loginEndpoint": "https://login.salesforce.com",
@@ -10,19 +12,19 @@
   "scripts": {
     "start": "electron ."
   },
-  "repository": "https://github.com/electron/electron-quick-start",
+  "license": "MIT",
+  "repository": "https://github.com/mobilecaddy/mobilecaddy-electron-starter",
   "keywords": [
-    "Electron",
-    "quick",
-    "start",
-    "tutorial",
+    "mobilecaddy",
+    "salesforce",
+    "electron",
+    "starter",
     "demo"
   ],
-  "author": "GitHub",
-  "license": "CC0-1.0",
   "devDependencies": {
-    "electron": "^1.4.1"
   },
   "dependencies": {
+    "electron": "^1.4.1",
+    "mobilecaddy-electron": ""
   }
 }
