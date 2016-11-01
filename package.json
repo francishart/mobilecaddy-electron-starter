@@ -25,6 +25,6 @@
   },
   "dependencies": {
     "electron": "^1.4.1",
-    "mobilecaddy-electron": ""
+    "mobilecaddy-electron": "git+https://github.com/MobileCaddy/mobilecaddy-electron#develop"
   }
 }
