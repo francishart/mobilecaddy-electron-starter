@@ -45,8 +45,8 @@ You **should** replace thhis with a real key for your own connected app. When co
 - This file is needed by the MobileCaddy libs. It's used as a springboard/root for our remote SPA
 - Needs these lines in the `head`
 ```html
-  <script src="./node-modules/mobilecaddy-electron/lib/force.js"></script>
-  <script src="./node-modules/mobilecaddy-electron/lib/launcher.js"></script>
+  <script src="node_modules/mobilecaddy-electron/lib/force.js"></script>
+  <script src="node_modules/mobilecaddy-electron/lib/launcher.js"></script>
 ```
 
 
