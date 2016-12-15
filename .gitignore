@@ -1,4 +1,7 @@
 node_modules
 
 # Should not store our private config in repos
-config.json
+config-priv.json
+build
+dist
+mobilecaddy-desktop-linux-x64

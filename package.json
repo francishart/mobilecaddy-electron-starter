@@ -2,15 +2,18 @@
   "name": "mobilecaddy-desktop",
   "productName": "mobilecaddy-desktop",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
-  "author": "MobileCaddy",
+  "description": "A minimal MobileCaddy Desktop Client",
+  "author": "MobileCaddy <support@mobilecaddy.net>",
   "license": "MIT",
   "main": "main.js",
   "buildName" : "BIZ001",
   "loginEndpoint": "https://login.salesforce.com",
   "salesforceApiVersion" : "v30.0",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "rebuild": "electron-rebuild -f -w sqlite3",
+    "pack": "build --dir",
+    "dist": "build"
   },
   "license": "MIT",
   "repository": "https://github.com/mobilecaddy/mobilecaddy-electron-starter",
@@ -21,10 +24,28 @@
     "starter",
     "demo"
   ],
-  "devDependencies": {
+  "build": {
+    "asar" : false,
+    "linux" : {
+      "category" : "Office",
+      "target" : "deb",
+      "desktop" : {
+        "Type":"Application",
+        "Encoding":"UTF-8",
+        "Name" : "BizCaddy Desktop",
+        "Commnent" : "A minimal MobileCaddy Desktop Client",
+        "Exec" : "/usr/local/bin/mobilecaddy-desktop",
+        "Icon" : "/opt/mobilecaddy-desktop/resources/app/icon.png",
+        "Terminal" : "false"
+      }
+    }
   },
-  "dependencies": {
+  "devDependencies": {
     "electron": "^1.4.1",
+    "electron-builder": "next"
+
+  },
+  "dependencies": {    "rimraf": "^2.5.4",
     "mobilecaddy-electron": "git+https://github.com/MobileCaddy/mobilecaddy-electron#develop"
   }
 }

@@ -18,13 +18,27 @@ A basic application needs just additions:
 - `loginEndpoint` can be set matched your environment (e.g. *test.salesforce.com* for a sandbox)
 
 ## config.json
+
+This file contains some config settings for our app. Supported items are as per this example;
+
+```
+{
+  "mainWindowWidth": 800,
+  "mainWindowHeight": 800,
+  "mainWindowMinWidth":800,
+  "mainWindowMinHeight": 600
+}
+```
+
+
+## config-priv.json
 Note this file is ignored by git, by default. This is done as it contains the Salesforce Connected app Consumer Key. You should create a file that looks like the following;
 ```
 {
 	"salesforce_consumer_key" : "<YOUR_CONSUMER_KEY_GOES HERE>"
 }
 ```
-The publicly known *SalesforceMobileSDK Sample App* consumer key can be used during development, and so your *config.json* would look like this;
+The publicly known *SalesforceMobileSDK Sample App* consumer key can be used during development, and so your *config-priv.json* would look like this;
 ```
 {
 	"salesforce_consumer_key" : "3MVG9Iu66FKeHhINkB1l7xt7kR8czFcCTUhgoA8Ol2Ltf1eYHOU4SqQRSEitYFDUpqRWcoQ2.dBv_a1Dyu5xa"
@@ -32,6 +46,8 @@ The publicly known *SalesforceMobileSDK Sample App* consumer key can be used dur
 ```
 
 You **should** replace thhis with a real key for your own connected app. When configuring your connected app you must specify the callback URL to be *testsfdc:///mobilesdk/detect/oauth/done*.
+
+This file can also optionally take a `prodBuild` item that should be set to true when building for packaging. This affects internal paths.
 
 
 ## main.js
