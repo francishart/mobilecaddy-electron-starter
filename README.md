@@ -49,6 +49,8 @@ You **should** replace thhis with a real key for your own connected app. When co
 
 This file can also optionally take a `prodBuild` item that should be set to true when building for packaging. This affects internal paths.
 
+It is possible to turn "debug" on (i.e. open dev tools on the main window) by setting the `debug` argument in the config-priv.json file. This defaults to `false`.
+
 
 ## main.js
 - Add the the following. This kicks off authentication to Salesforce on the first run up
@@ -68,7 +70,7 @@ This file can also optionally take a `prodBuild` item that should be set to true
 
 ## To Use
 
-Clone the repo, install deps and run.
+Fork the repo, or download the zip. Install deps and run.
 
 ```bash
 # Install dependencies
@@ -84,3 +86,20 @@ npm start dbg
 npm start clear
 ```
 
+
+## Packaging
+
+Packaging is handled by the [Electron Builder](https://github.com/electron-userland/electron-builder) package. Several options can be configured in the `package.json`. Further info can be found on their wiki, but key items are listed here, and *should* be set specifically for each product
+
+| Name |Description|
+| --- | --- |
+| version ||
+| description||
+| buildName | Should match the *Device App Name* as specified on Salesforce for the Mobile Application |
+| build.appId| The application id. Used as [CFBundleIdentifier](https://developer.apple.com/library/ios/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html#//apple_ref/doc/uid/20001431-102070) for MacOS and as [Application User Model ID](https://msdn.microsoft.com/en-us/library/windows/desktop/dd378459(v=vs.85).aspx) for Windows (NSIS target only, Squirrel.Windows not supported). Defaults to com.electron.${name}. It is strongly recommended that an explicit ID be set.|
+| build.copyright | The human-readable copyright line for the app. Defaults to `Copyright © year author`.|
+| build.productName | See [Electron Builder docs](https://github.com/electron-userland/electron-builder/wiki/Options#AppMetadata-productName)|
+| build.win.icon | A .ico file |
+| legalTrademark | Legal Trademark text, such as `MobileCaddy is a legal trademark of MobileCaddy`|
+
+A EULA License placeholder is included by default in in the `build/license.txt` file, or can be configured further as per the  [Electron Builder docs](https://github.com/electron-userland/electron-builder/wiki/Options). This *should be* modified or removed before publication|

@@ -6,16 +6,15 @@
   "author": "MobileCaddy <support@mobilecaddy.net>",
   "license": "MIT",
   "main": "main.js",
-  "buildName" : "BIZ001",
+  "buildName": "BIZ001",
   "loginEndpoint": "https://login.salesforce.com",
-  "salesforceApiVersion" : "v30.0",
+  "salesforceApiVersion": "v30.0",
   "scripts": {
     "start": "electron .",
     "rebuild": "electron-rebuild -f -w sqlite3",
     "pack": "build --dir",
     "dist": "build"
   },
-  "license": "MIT",
   "repository": "https://github.com/mobilecaddy/mobilecaddy-electron-starter",
   "keywords": [
     "mobilecaddy",
@@ -25,27 +24,45 @@
     "demo"
   ],
   "build": {
-    "asar" : false,
-    "linux" : {
-      "category" : "Office",
-      "target" : "deb",
-      "desktop" : {
-        "Type":"Application",
-        "Encoding":"UTF-8",
-        "Name" : "BizCaddy Desktop",
-        "Commnent" : "A minimal MobileCaddy Desktop Client",
-        "Exec" : "/usr/local/bin/mobilecaddy-desktop",
-        "Icon" : "/opt/mobilecaddy-desktop/resources/app/icon.png",
-        "Terminal" : "false"
-      }
+    "appId": "net.mobilecaddy.bizCaddy-desktop",
+    "copyright": "Copyright © 2017 MobileCaddy",
+    "productName": "BizCaddy",
+    "asar": false,
+    "compression": "normal",
+    "linux": {
+      "category": "Office",
+      "target": "deb",
+      "desktop": {
+        "Type": "Application",
+        "Encoding": "UTF-8",
+        "Name": "BizCaddy Desktop",
+        "Commnent": "A minimal MobileCaddy Desktop Client",
+        "Exec": "/usr/local/bin/mobilecaddy-desktop",
+        "Icon": "/opt/mobilecaddy-desktop/resources/app/icon.png",
+        "Terminal": "false"
+      },
+      "executableName": "BizCaddy"
+    },
+    "win": {
+      "icon": "build/icons/icon",
+      "legalTrademark": "BizCaddy is a trademark of MobileCaddy"
+    },
+    "nsis": {
+      "oneClick": false
     }
   },
   "devDependencies": {
+    "devtron": "^1.4.0",
     "electron": "^1.4.1",
-    "electron-builder": "next"
-
+    "electron-builder": "next",
+    "electron-prebuilt": "^1.4.13",
+    "electron-rebuild": "^1.5.4"
   },
-  "dependencies": {    "rimraf": "^2.5.4",
-    "mobilecaddy-electron": "git+https://github.com/MobileCaddy/mobilecaddy-electron#develop"
+  "dependencies": {
+    "electron-debug": "^1.1.0",
+    "electron-is-dev": "^0.1.2",
+    "mobilecaddy-electron": "git+https://github.com/MobileCaddy/mobilecaddy-electron#sqlite",
+    "rimraf": "^2.5.4",
+    "sqlite3": "^3.1.8"
   }
 }

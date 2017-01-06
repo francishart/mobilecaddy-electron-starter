@@ -6,6 +6,9 @@ const BrowserWindow = electron.BrowserWindow
 
 const mobilecaddy = require('mobilecaddy-electron')
 
+const isDev = require('electron-is-dev');
+require('electron-debug')();
+
 /**
  * ----------------------------------------------------------------------------
  * M E N U
