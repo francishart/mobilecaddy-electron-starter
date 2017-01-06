@@ -2,6 +2,7 @@
 
 A basic app that uses [MobileCaddy](https://mobliecaddy.net) to run fully offline, customisable Salesforce desktop apps.
 
+# Files needed
 A basic application needs just additions:
 
 ## package.json
@@ -68,13 +69,49 @@ It is possible to turn "debug" on (i.e. open dev tools on the main window) by se
 ```
 
 
-## To Use
+# To Use
 
-Fork the repo, or download the zip. Install deps and run.
+Fork the repo, or download the zip. Install deps
 
 ```bash
 # Install dependencies
 npm install
+```
+
+We need to run some steps to build the SQLite DB. Note, these are WIP;
+
+### Win (10)
+
+These steps only need to be done once.
+
+First install the tools needed to build SQLite (python, c++ compilers, etc) . Note, this can take many minutes (I have experienced 20+).
+
+```
+npm install --global --production windows-build-tools
+```
+
+Build the native modules
+```
+.\node_modules\.bin\electron-rebuild.cmd
+```
+
+This gives us a `node_modules\sqlite3\lib\binding\{some-placeholder-name}\node_sqlite3.node`, this needs to be renamed as required (e.g. `node_modules\sqlite3\lib/binding\electron-v1.4-win32-x86\node_sqlite3.node
+`).
+
+### Linux
+
+This will, based on default config, build a .deb
+
+```
+npm run rebuild
+```
+
+
+***
+
+Once we have this prepared we can run in dev mode from the command line like this;
+
+```
 
 # Normal run
 npm start
@@ -87,9 +124,13 @@ npm start clear
 ```
 
 
-## Packaging
+# Packaging
 
-Packaging is handled by the [Electron Builder](https://github.com/electron-userland/electron-builder) package. Several options can be configured in the `package.json`. Further info can be found on their wiki, but key items are listed here, and *should* be set specifically for each product
+Packaging is handled by the [Electron Builder](https://github.com/electron-userland/electron-builder) package.
+
+## Options
+
+Several options can be configured in the `package.json`. Further info can be found on their wiki, but key items are listed here, and *should* be set specifically for each product
 
 | Name |Description|
 | --- | --- |
@@ -103,3 +144,12 @@ Packaging is handled by the [Electron Builder](https://github.com/electron-userl
 | legalTrademark | Legal Trademark text, such as `MobileCaddy is a legal trademark of MobileCaddy`|
 
 A EULA License placeholder is included by default in in the `build/license.txt` file, or can be configured further as per the  [Electron Builder docs](https://github.com/electron-userland/electron-builder/wiki/Options). This *should be* modified or removed before publication|
+
+
+## Build our Installable
+
+This will, based on default config, build a .deb for Linux or a NSIS for Windows. The taget can be picked by adding a flag to the `dist` item in the package.json. E.g. `"dist": "build --win"`
+
+```
+npm run dist
+```
