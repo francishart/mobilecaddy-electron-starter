@@ -36,13 +36,15 @@ This file contains some config settings for our app. Supported items are as per 
 Note this file is ignored by git, by default. This is done as it contains the Salesforce Connected app Consumer Key. You should create a file that looks like the following;
 ```
 {
-	"salesforce_consumer_key" : "<YOUR_CONSUMER_KEY_GOES HERE>"
+	"salesforce_consumer_key" : "<YOUR_CONNECTED_APP_CONSUMER_KEY>",
+  "callbackUrl": <YOUR_CONNECTED_APP_CALLBACK_URL>
 }
 ```
-The publicly known *SalesforceMobileSDK Sample App* consumer key can be used during development, and so your *config-priv.json* would look like this;
+The publicly known *SalesforceMobileSDK Sample App* consumer key and callback URL can be used during development, and so your *config-priv.json* would look like this;
 ```
 {
-	"salesforce_consumer_key" : "3MVG9Iu66FKeHhINkB1l7xt7kR8czFcCTUhgoA8Ol2Ltf1eYHOU4SqQRSEitYFDUpqRWcoQ2.dBv_a1Dyu5xa"
+	"salesforce_consumer_key" : "3MVG9Iu66FKeHhINkB1l7xt7kR8czFcCTUhgoA8Ol2Ltf1eYHOU4SqQRSEitYFDUpqRWcoQ2.dBv_a1Dyu5xa",
+  "callbackUrl": "testsfdc:///mobilesdk/detect/oauth/done"
 }
 ```
 
