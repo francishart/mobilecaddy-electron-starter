@@ -36,6 +36,8 @@ This file contains some config settings for our app. Supported items are as per 
 Note this file is ignored by git, by default. This is done as it contains the Salesforce Connected app Consumer Key. You should create a file that looks like the following;
 ```
 {
+  "prodBuild": true,
+  "debug": false,
 	"salesforce_consumer_key" : "<YOUR_CONNECTED_APP_CONSUMER_KEY>",
   "callbackUrl": <YOUR_CONNECTED_APP_CALLBACK_URL>
 }
@@ -43,6 +45,8 @@ Note this file is ignored by git, by default. This is done as it contains the Sa
 The publicly known *SalesforceMobileSDK Sample App* consumer key and callback URL can be used during development, and so your *config-priv.json* would look like this;
 ```
 {
+  "prodBuild": true,
+  "debug": false,
 	"salesforce_consumer_key" : "3MVG9Iu66FKeHhINkB1l7xt7kR8czFcCTUhgoA8Ol2Ltf1eYHOU4SqQRSEitYFDUpqRWcoQ2.dBv_a1Dyu5xa",
   "callbackUrl": "testsfdc:///mobilesdk/detect/oauth/done"
 }
@@ -50,7 +54,7 @@ The publicly known *SalesforceMobileSDK Sample App* consumer key and callback UR
 
 You **should** replace thhis with a real key for your own connected app. When configuring your connected app you must specify the callback URL to be *testsfdc:///mobilesdk/detect/oauth/done*.
 
-This file can also optionally take a `prodBuild` item that should be set to true when building for packaging. This affects internal paths.
+This file can also optionally take a `prodBuild` item that should be set to true when building for packaging. This affects internal paths and should be set to `false` when running from the command line.
 
 It is possible to turn "debug" on (i.e. open dev tools on the main window) by setting the `debug` argument in the config-priv.json file. This defaults to `false`.
 

@@ -45,30 +45,4 @@ Menu.setApplicationMenu(menu)
  */
 function clearCacheAndQuit(){
   mobilecaddy.logout();
-  // var appDataPath = app.getPath('userData');
-  // console.log('appDataPath', appDataPath);
-  // if (appDataPath.indexOf('mobilecaddy-desktop') > 0) {
-  //   app.on('will-quit', (event) => {
-  //     console.log("will-quit");
-  //     event.preventDefault();
-  //     var appDataPath = app.getPath('userData');
-  //     let rimraf = require('rimraf');
-  //     console.log('appDataPath', appDataPath);
-  //     console.log('rimraf');
-  //     rimraf(appDataPath, function(e){
-  //       console.log("will-quit rimraf", e);
-  //       app.exit();
-  //     });
-  //   })
-
-  //   app.on('quit', () => {
-  //     console.log("quit");
-
-  //   })
-
-  //   console.log("going to quit");
-  //   app.quit();
-  // } else {
-  //   // console.log("Did NOT delete app cache");
-  // }
 }
