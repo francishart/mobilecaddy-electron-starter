@@ -159,3 +159,27 @@ This will, based on default config, build a .deb for Linux or a NSIS for Windows
 ```
 npm run dist
 ```
+
+# Post Install Running Options
+
+Command line args can be provided to run in debug mode (open devTools) and for setiing the login Endpoint.
+
+Note these are pretty crud and must be supplied in order
+
+* Arg 1 - CmdLine Args "d"
+* Arg 2 - Debug/Clear swicth : "clear" | "dbg"
+* Arg 3 - Sandox or custom endpoint : "sandbox" | "custom"
+* Arg 4 - Custom login endpoint URL
+
+## Windows
+
+```
+// run in debug
+MobileCaddy.exe d dbg
+
+// run against a sandbox (https://test.salesfoce.com)
+MobileCaddy.exe d false sandbox
+
+// run against a custom endpoint
+MobileCaddy.exe d false custom https://mycustomdomain.salesforce.com
+```
