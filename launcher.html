@@ -9,9 +9,24 @@
     <link rel="stylesheet" href="app.css" />
 
     <title>MobileCaddy Desktop</title>
+
+    <!-- LEAVE THIS SCRIPT IN TO ENABLE MOBILECADDY RECOVERY SUPPORT -->
+    <script type="text/javascript">
+      var h1Clicks = 0;
+      function h1Click() {
+        h1Clicks ++;
+        console.log("h1Click", h1Clicks);
+        if (h1Clicks >= 5) {
+          var ipcRenderer = require('electron').ipcRenderer;
+          ipcRenderer.sendSync('showRecovery', '');
+        }
+      }
+    </script>
+
   </head>
   <body>
-    <h1>MobileCaddy Desktop!</h1>
+    <a onClick="h1Click(); return false;" style="text-decoration:none;"><h1>MobileCaddy Desktop!</h1></a>
+    <h1 style="margin-top: 1em;">V1.0.1</h1>
     <!-- All of the Node.js APIs are available in this renderer process. -->
   </body>
 </html>
