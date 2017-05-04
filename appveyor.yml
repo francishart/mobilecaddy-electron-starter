@@ -21,7 +21,7 @@ install:
 build: off
 
 # Create installer
-package:
+
   - npm run dist
   
  
