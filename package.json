@@ -23,6 +23,7 @@
     "starter",
     "demo"
   ],
+  "appId": "net.mobilecaddy.bizCaddy-desktop",
   "build": {
     "appId": "net.mobilecaddy.bizCaddy-desktop",
     "copyright": "Copyright © 2017 MobileCaddy",
@@ -44,8 +45,7 @@
       "executableName": "BizCaddy"
     },
     "win": {
-      "icon": "build/icons/icon",
-      "legalTrademark": "BizCaddy is a trademark of MobileCaddy"
+      "icon": "build/icons/icon"
     },
     "nsis": {
       "oneClick": false
