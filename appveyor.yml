@@ -24,4 +24,9 @@ build: off
 after_test:
   - npm run dist
   
+artifacts:
+
+  # pushing a single file
+  - path: dist/*.exe
+  
  
